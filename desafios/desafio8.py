@@ -166,7 +166,7 @@ class Comentario:
         self.fecha_hora=fecha_hora
         self.estado=estado
 
-class Sistema:
+class Sistema:  
     def __init__(self):
         print('Comienza el juego')
         
