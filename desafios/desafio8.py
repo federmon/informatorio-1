@@ -327,6 +327,7 @@ class Sistema:
                 
             elif opcion==2:
                 print('loguearse()')
+                input('Presione enter para continuar')
             elif opcion==3:
                 print("USUARIOS CARGADOS: ")
                 for index,username in enumerate (self.usernames,1):
