@@ -1,6 +1,4 @@
-from datetime import date
-
-    
+from datetime import date    
 '''
 Desafío 8: Principios de programación orientada a objetos
 Requisitos técnicos:
@@ -117,6 +115,7 @@ class Usuario:
     self.set_estado(True)
     self.set_online(False)
     self.set_fecha(date.today())    
+    
   def atributos(self):
     print(self.__id, ":", )
     print("Nombre", self.__nombre)
@@ -129,9 +128,13 @@ class Usuario:
     print("Estado", self.__estado)
     print(self.__online)
     print(self.__fecha)
+    
 class Publico(Usuario):
     def __init__(self):
         self.es_publico=None 
+    
+    def get_es_publico(self):
+        return self.es_publico()
     
     def set_es_publico(self,valor):
         self.es_publico=valor #Consultar que tipo de valor
@@ -152,10 +155,12 @@ class Colaborador(Usuario):
     
     def atributos(self):
        return super().atributos()
-
     
     def set_es_colaborador(self,valor):
         self.es_colaborador=valor #Consultar que tipo de valor
+    
+    def get_es_colaborador(self):
+        return self.es_colaborador()
     
     def registrar(self,id,nombre,apellido,telefono,username,email,contrasena,avatar):
         super().registrar(id,nombre,apellido,telefono,username,email,contrasena,avatar)
