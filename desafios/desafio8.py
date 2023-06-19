@@ -1,6 +1,4 @@
-from datetime import date
-
-    
+from datetime import date    
 '''
 Desafío 8: Principios de programación orientada a objetos
 Requisitos técnicos:
@@ -117,21 +115,26 @@ class Usuario:
     self.set_estado(True)
     self.set_online(False)
     self.set_fecha(date.today())    
+    
   def atributos(self):
-    print(self.__id, ":", )
-    print("Nombre", self.__nombre)
-    print("Apellido", self.__apellido)
-    print("Telefono", self.__telefono)
-    print(self.__username)
-    print(self.__email)
-    print(self.__contrasena)
-    print(self.__avatar)
-    print("Estado", self.__estado)
-    print(self.__online)
-    print(self.__fecha)
+    print("ID: ",self.__id)
+    print("Nombre: ", self.__nombre)
+    print("Apellido: ", self.__apellido)
+    print("Telefono: ", self.__telefono)
+    print("Username: ",self.__username)
+    print("Email: ",self.__email)
+    print("Contraseña: ",self.__contrasena)
+    print("Avatar: ",self.__avatar)
+    print("Estado: ", self.__estado)
+    print("Online: ",self.__online)
+    print("Fecha de Alta: ",self.__fecha)
+    
 class Publico(Usuario):
     def __init__(self):
         self.es_publico=None 
+    
+    def get_es_publico(self):
+        return self.es_publico()
     
     def set_es_publico(self,valor):
         self.es_publico=valor #Consultar que tipo de valor
@@ -139,7 +142,8 @@ class Publico(Usuario):
     def registrar(self,id,nombre,apellido,telefono,username,email,contrasena,avatar):
         super().registrar(id,nombre,apellido,telefono,username,email,contrasena,avatar)
         self.set_es_publico(True)
-        
+    
+    
     def comentar(algo):
         print(algo)
         
@@ -152,7 +156,6 @@ class Colaborador(Usuario):
     
     def atributos(self):
        return super().atributos()
-
     
     def set_es_colaborador(self,valor):
         self.es_colaborador=valor #Consultar que tipo de valor
@@ -274,10 +277,8 @@ class Sistema:
             opcion=self.ingresar_entero(1,2,'Ingrese 1 si es un Usuario tipo Publico o 2 si es tipo Colaborador: ','Por Favor ingrese 1 o 2 nada más')
             if opcion==1:
                 nuevo_user=Publico()
-                nuevo_user.set_es_publico(True)    
             else:
                 nuevo_user=Colaborador()
-                nuevo_user.set_es_colaborador(True)
             id=len(self.usuarios)+1
             nombre=input("Ingrese su nombre por favor: ")
             apellido=input('ingrese su apellido por favor: ')
@@ -287,11 +288,13 @@ class Sistema:
             contrasena=input("Ingrese su contrasena por favor: ")
             avatar=input("ingrese el link de la imagen de su avatar: ")
             nuevo_user.registrar(id,nombre,apellido,telefono,username,email,contrasena,avatar)
-            self.usernames.append(username)
+            self.agregar_username(username)
+            self.agregar_usuario(nuevo_user)
             self.usuarios.append(nuevo_user)
+            print("Los Datos cargados del nuevo usuario son:")
+            nuevo_user.atributos()
        	 #publico1.registrar(2,'Cristian','Moreira',3624654321,'crismor','crismor@gmail.com','654321c','www.tusfotos.com/fotodecris')
             input('Presiona Enter para continuar')
-          
           
           
         else:
@@ -324,6 +327,7 @@ class Sistema:
                 
             elif opcion==2:
                 print('loguearse()')
+                input('Presione enter para continuar')
             elif opcion==3:
                 print("USUARIOS CARGADOS: ")
                 for index,username in enumerate (self.usernames,1):
