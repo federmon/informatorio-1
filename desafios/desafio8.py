@@ -75,6 +75,29 @@ class Usuario:
     self.__estado=estado
   def set_online(self,online):
     self.__online=online
+    
+  def get_id(self):
+    return(self.__id)
+  def get_nombre(self):
+    return(self.__nombre)   
+  def get_apellido(self):
+    return(self.__apellido)
+  def get_telefono(self):
+    return(self.__telefono)
+  def get_username(self):
+    return(self.__username)
+  def get_email(self):
+    return(self.__email)
+  def get_contrasena(self):
+    return(self.__contrasena)
+  def get_fecha(self):
+    return(self.__fecha)
+  def get_avatar(self):
+    return(self.__avatar)
+  def get_estado(self):
+    return(self.__estado)
+  def get_online(self):
+    return(self.__online)
 
   def login(self):
     self.set_online=True
@@ -157,6 +180,23 @@ class Articulo:
         self.imagen=imagen
         self.estado=estado
         
+    def get_id(self):
+        return self.id
+    def get_id_usuario(self):
+        return self.id_usuario
+    def get_titulo(self):
+        return self.titulo
+    def get_resumen(self):
+        return self.resumen
+    def get_contenido(self):
+        return self.contenido
+    def get_fecha_publicacion(self):
+        return self.fecha_publicacion
+    def get_imagen(self):
+        return self.imagen
+    def get_estado(self):
+        return self.estado
+        
 class Comentario:
     def __init__(self,id,id_articulo,id_usuario,contenido,fecha_hora,estado):
         self.id=id
@@ -165,42 +205,129 @@ class Comentario:
         self.contenido=contenido
         self.fecha_hora=fecha_hora
         self.estado=estado
+        
+    def get_id(self):
+        return self.id
+    def get_id_articulo(self):
+        return self.id_articulo
+    def get_id_usuario(self):
+        return self.id_usuario
+    def get_contenido(self):
+        return self.contenido
+    def get_fecha_hora(self):
+        return self.fecha_hora
+    def get_estado(self):
+        return self.estado
+
 
 class Sistema:  
     def __init__(self):
         print('Comienza el juego')
-        
+        #Cargamos 1 colaborador, 1 publico, 1 articulo y 1 comentario
         colaborador1=Colaborador()
-        colaborador1.registrar(1,'Fede','Monzon',3624123456,'fedemon','fedemon@gmail.com','123456',
-            'www.tusfotos.com/fotodefede'
-        )
+        colaborador1.registrar(1,'Fede','Monzon',3624123456,'fedemon','fedemon@gmail.com','123456','www.tusfotos.com/fotodefede')
         publico1=Publico()
         publico1.registrar(2,'Cristian','Moreira',3624654321,'crismor','crismor@gmail.com','654321c','www.tusfotos.com/fotodecris')
-        self.usuarios= [colaborador1,publico1]
-        colaborador1.atributos()
-        self.comentarios=[]
+        self.usuarios= []
+        self.agregar_usuario(colaborador1)
+        self.agregar_usuario(publico1)
+        self.usernames=[]#se cargan los nombres en una lista para consultar cuando se registran si los usernames estan ocupados
+        self.agregar_username(publico1.get_username())
+        self.agregar_username(colaborador1.get_username())
         self.articulos=[]
+        self.comentarios=[]
+        #Creamos el primer Articulo
+        primer_articulo=Articulo(1,1,"Titulo del Primer Articulo","Resumen del primer articulo","Contenido del primer articulo",date.today(),'www.imagen.com/primer_articulo',True)
+        self.agregar_articulo(primer_articulo)
+        #Creamos el primer Comentario del Primer Articulo
+        
+        
+        
+    def agregar_usuario(self,usuario):
+        self.usuarios.append(usuario)
     
-   
+    def agregar_username(self,username):
+        self.usernames.append(username)
     
-    def comenzar(self):
-        def ingresar_entero(mensaje,error):            
+    def agregar_comentario(self,comentario):
+        self.comentarios.append(comentario)
+    
+    def agregar_articulo(self,articulo):
+        self.articulos.append(articulo)
+    
+
+    def ingresar_entero(self,min,max,mensaje,error):            
             while True:
                 try:
                     numero = int(input(mensaje))
+                    if numero < min or numero > max:
+                        raise ValueError
                     return numero
                 except ValueError:
                     print(error)
+                    
+
+        
+    def registrar(self):
+        nuevo_username=input('Ingresar un username nuevo para poder crearse un usuario: ')
+        if self.usernames.count(nuevo_username)==0:
+            opcion=self.ingresar_entero(1,2,'Ingrese 1 si es un Usuario tipo Publico o 2 si es tipo Colaborador: ','Por Favor ingrese 1 o 2 nada más')
+            if opcion==1:
+                nuevo_user=Publico()
+                nuevo_user.set_es_publico(True)    
+            else:
+                nuevo_user=Colaborador()
+                nuevo_user.set_es_colaborador(True)
+            id=len(self.usuarios)+1
+            nombre=input("Ingrese su nombre por favor: ")
+            apellido=input('ingrese su apellido por favor: ')
+            telefono=self.ingresar_entero(1,9999999999,'Ingrese su numero de telefono sin el 15','Por favor ingrese numeros nada mas: ')
+            username=nuevo_username
+            email=input("ingrese su correo electronico por favor: ")
+            contrasena=input("Ingrese su contrasena por favor: ")
+            avatar=input("ingrese el link de la imagen de su avatar: ")
+            nuevo_user.registrar(id,nombre,apellido,telefono,username,email,contrasena,avatar)
+            self.usernames.append(username)
+            self.usuarios.append(nuevo_user)
+       	 #publico1.registrar(2,'Cristian','Moreira',3624654321,'crismor','crismor@gmail.com','654321c','www.tusfotos.com/fotodecris')
+            input('Presiona Enter para continuar')
+          
+          
+          
+        else:
+            while True:
+                opcion=self.ingresar_entero(1,2,'Usuario ya ocupado. Que desea hacer? 1_ Probar otro usuario o 2_ Salir al menu anterior','Ingrese 1 o 2 nada mas por favor')
+                if opcion == 1:
+                    self.registrar()
+                    break
+                else:
+                    break
+                    
+        print('finaliza metodo registar')
+          
+    
+    
+    def loguearse(self):
+      pass
+   
+    
+    def comenzar(self):
+       
         bandera = True
         
         while bandera:
-            print("Que desea realizar? 1_ Registrar 2_Logearse 3_Salir")
-            opcion=ingresar_entero('Ingresar la opcion: ','Por favor ingresa un numero nada mas')
-            print
+            print("Que desea realizar? 1_ Registrar 2_Logearse 3_Ver usuarios 4_ Salir")
+            opcion=self.ingresar_entero(1,4,'Ingresar la opcion: ','Por favor ingresa un numero del 1 al 3')
             if opcion==1:
-                print('registrar()')
+                print('---------------------------------- Inicio de Registracion ----------------------------------')
+                self.registrar()
+                
             elif opcion==2:
                 print('loguearse()')
+            elif opcion==3:
+                print("USUARIOS CARGADOS: ")
+                for index,username in enumerate (self.usernames,1):
+                    print(index,username)
             else:
                 bandera=False
                 print('Esto fue el desafio_8 del grupo 3')
