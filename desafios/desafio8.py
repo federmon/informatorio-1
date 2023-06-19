@@ -244,7 +244,13 @@ class Sistema:
         self.agregar_articulo(primer_articulo)
         #Creamos el primer Comentario del Primer Articulo
         
-        
+    def listar_articulos(self):
+        #TODO Lista articulos segun id titulo y fecha. y que devuelva 0 si quiere salir o 1 al N del id del arituclo
+        pass
+    
+    def listar_comentarios(self,id_articulo):
+        #TODO Muestra por pantalla todos los comentarios o ninguno de un articulo
+        pass
         
     def agregar_usuario(self,usuario):
         self.usuarios.append(usuario)
