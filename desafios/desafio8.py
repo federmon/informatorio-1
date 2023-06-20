@@ -243,8 +243,13 @@ class Sistema:
         primer_articulo=Articulo(1,1,"Titulo del Primer Articulo","Resumen del primer articulo","Contenido del primer articulo",date.today(),'www.imagen.com/primer_articulo',True)
         self.agregar_articulo(primer_articulo)
         #Creamos el primer Comentario del Primer Articulo
+        primer_comentario=Comentario(1,1,1,"Soy el Colaborador que creo este articulo","19/06/2023-18:06",True)
+        self.agregar_comentario(primer_comentario)
         
     def listar_articulos(self):
+        for articulo in self.articulos:
+            print(f"ID: {articulo.get_id()} Titulo")
+            print(f"Titulo: {articulo}")
         #TODO Lista articulos segun id titulo y fecha. y que devuelva 0 si quiere salir o 1 al N del id del arituclo
         pass
     
@@ -252,6 +257,11 @@ class Sistema:
         #TODO Muestra por pantalla todos los comentarios o ninguno de un articulo
         pass
         
+    def get_usernames(self):
+        return self.usernames
+    def get_usuarios(self):
+        return self.usuarios
+    
     def agregar_usuario(self,usuario):
         self.usuarios.append(usuario)
     
@@ -300,9 +310,7 @@ class Sistema:
             print("Los Datos cargados del nuevo usuario son:")
             nuevo_user.atributos()
        	 #publico1.registrar(2,'Cristian','Moreira',3624654321,'crismor','crismor@gmail.com','654321c','www.tusfotos.com/fotodecris')
-            input('Presiona Enter para continuar')
-          
-          
+            input('Presiona Enter para continuar')  
         else:
             while True:
                 opcion=self.ingresar_entero(1,2,'Usuario ya ocupado. Que desea hacer? 1_ Probar otro usuario o 2_ Salir al menu anterior','Ingrese 1 o 2 nada mas por favor')
@@ -311,29 +319,61 @@ class Sistema:
                     break
                 else:
                     break
-                    
         print('finaliza metodo registar')
-          
+        
+    def menu_opciones(self,username):
+        for user in self.get_usuarios():
+            if user.get_username()==username:
+                usuario=user
+        print(f"Bienvenido {usuario.get_nombre()}! que desea hacer?")
+        
     
+    def validacion_username(self,username_valido):
+        for username in self.get_usernames():
+            if username==username_valido:
+                return True
+        return False
+    
+    def validacion_password(self,username_valido,password_valido):
+        for usuario in self.get_usuarios():
+            if usuario.get_username()==username_valido:
+                if usuario.get_contrasena()==password_valido:
+                    return True
+                else:
+                    return False
+        return False
+            
     
     def loguearse(self):
-      pass
-   
+        while True:
+            username=input('Ingrese su username por favor: ')
+            if not self.validacion_username(username):
+                print("El username ingresado es incorrecto por favor")
+                opcion=self.ingresar_entero(1,2,'Desea intentar de nuevo ingrese 1 o ingrese 2 si desea salir al menu anterior: ','Por favor ingresa un numero del 1 o 2')
+                if opcion==2:
+                    break
+            else:
+                password=input("Perfecto, ahora ingrese su contraseña: ")
+                if not self.validacion_password(username,password):
+                    input("Contraseña incorrecta! Presiona ENTER para continuar")
+                else:
+                    input("contraseña correcta! Presiona ENTER para continuar")
+                    self.menu_opciones(username) #acá ya esta logeado y entra en el menu
+					
     
     def comenzar(self):
        
         bandera = True
         
         while bandera:
+            print("------------------ Bienvenido al desafio 8 del grupo 3 ------------")
             print("Que desea realizar? 1_ Registrar 2_Logearse 3_Ver usuarios 4_ Salir")
             opcion=self.ingresar_entero(1,4,'Ingresar la opcion: ','Por favor ingresa un numero del 1 al 3')
             if opcion==1:
                 print('---------------------------------- Inicio de Registracion ----------------------------------')
-                self.registrar()
-                
+                self.registrar()                
             elif opcion==2:
-                print('loguearse()')
-                input('Presione enter para continuar')
+                self.loguearse()
             elif opcion==3:
                 print("USUARIOS CARGADOS: ")
                 for index,username in enumerate (self.usernames,1):
