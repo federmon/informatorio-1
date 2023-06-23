@@ -1,4 +1,6 @@
-from datetime import date    
+from datetime import date
+from datetime import datetime
+   
 '''
 Desafío 8: Principios de programación orientada a objetos
 Requisitos técnicos:
@@ -243,7 +245,7 @@ class Sistema:
         primer_articulo=Articulo(1,1,"Titulo del Primer Articulo","Resumen del primer articulo","Contenido del primer articulo",date.today(),'www.imagen.com/primer_articulo',True)
         self.agregar_articulo(primer_articulo)
         #Creamos el primer Comentario del Primer Articulo
-        primer_comentario=Comentario(1,1,1,"Soy el Colaborador que creo este articulo","19/06/2023-18:06",True)
+        primer_comentario=Comentario(1,1,1,"Soy el Colaborador que creo este articulo",datetime.now().strftime("%d/%m/%Y %H:%M"),True)
         self.agregar_comentario(primer_comentario)
     
     def get_articulos(self):
@@ -295,18 +297,31 @@ class Sistema:
                 except ValueError:
                     print(error)
     
-    def crearArticulo(self):
-        #Crear metodo crear articulo que obtiene un id usuario y devuelve un articulo.
+    def crearArticulo(self,id_usuario):
+        id_articulo=len(self.get_articulos())+1
+        titulo=input("Por favor ingrese el titulo de su nevo Articulo: ")
+        resumen=input("Por favor ingrese el resumen de su nuevo Articulo: ")        
+        nuevo_articulo=Articulo()
         pass
     
+    def crearComentario(self,id_articulo,id_usuario):
+        contenido=input("Ingrese lo que opina respecto al articulo por favor: ")
+        id_comentario=len(self.get_comentarios())+1
+        estado=True
+        fecha_hora= datetime.now().strftime("%d/%m/%Y %H:%M")
+        print("momento creado: ", fecha_hora)
+        comentario_nuevo=Comentario(id_comentario,id_articulo,id_usuario,contenido,fecha_hora,estado)
+        return comentario_nuevo
+
     def leerComentarios(self,id_articulo):
         comentarios_del_articulo=[]
         for comentario in self.get_comentarios():
             if comentario.get_id_articulo() == id_articulo:
                 comentarios_del_articulo.append(comentario)
-        
+        print("----------------------------------------")
         if len(comentarios_del_articulo)==0:
             print("No hay ningun comentario para el articulo que consulta")
+            print("----------------------------------------")
         else:
             for comentario in comentarios_del_articulo:
                 print(f"'{self.get_username_by_id(comentario.get_id_usuario())}' comentó: {comentario.get_contenido()}")
@@ -375,13 +390,15 @@ class Sistema:
                 print(f"Desea leer los comentarios de alguno de los {nro_articulos} Articulos?")
                 opcion=self.ingresar_entero(0,nro_articulos,"Por favor ingresa el id del articulo o 0 si desea salir: ",f"solamente ingrese desde 0 hasta {nro_articulos}")
                 if opcion != 0:
-                    self.leerComentarios(opcion,)
+                    self.leerComentarios(opcion)
+                    id_articulo=opcion
                     opcion=self.ingresar_entero(0,nro_articulos,"Por favor ingresa 0 si desea salir o 1 si desea agregar un comentario: ","solamente ingrese 0 o 1")
                     if opcion == 1:
-                        comentario=self.crearComentario()
+                        comentario=self.crearComentario(id_articulo,usuario.get_id())
                         self.agregar_comentario(comentario)
             else:
-                self.crearArticulo(usuario)
+                articulo=self.crearArticulo(usuario.get_id())
+                self.agregar_articulo(articulo)
                 
         
         
