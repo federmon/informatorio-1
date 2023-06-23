@@ -245,22 +245,23 @@ class Sistema:
         #Creamos el primer Comentario del Primer Articulo
         primer_comentario=Comentario(1,1,1,"Soy el Colaborador que creo este articulo","19/06/2023-18:06",True)
         self.agregar_comentario(primer_comentario)
-        
-    def listar_articulos(self):
-        for articulo in self.articulos:
-            print(f"ID: {articulo.get_id()} Titulo")
-            print(f"Titulo: {articulo}")
-        #TODO Lista articulos segun id titulo y fecha. y que devuelva 0 si quiere salir o 1 al N del id del arituclo
-        pass
     
-    def listar_comentarios(self,id_articulo):
-        #TODO Muestra por pantalla todos los comentarios o ninguno de un articulo
-        pass
-        
+    def get_articulos(self):
+        return self.articulos
+    
+    def get_comentarios(self):
+        return self.comentarios
+    
     def get_usernames(self):
         return self.usernames
+    
     def get_usuarios(self):
         return self.usuarios
+    
+    def get_username_by_id(self,id_usuario):
+        for usuario in self.get_usuarios():
+            if usuario.get_id()==id_usuario:                
+                return usuario.get_username()
     
     def agregar_usuario(self,usuario):
         self.usuarios.append(usuario)
@@ -273,7 +274,16 @@ class Sistema:
     
     def agregar_articulo(self,articulo):
         self.articulos.append(articulo)
+        
+    def listar_articulos(self):
+        articulos=self.get_articulos()
+        for articulo in articulos:
+            print(f"ID: {articulo.get_id()}, Titulo: {articulo.get_titulo()}")
+        return(len(articulos))
     
+    def listar_comentarios(self,id_articulo):
+        #TODO Muestra por pantalla todos los comentarios o ninguno de un articulo
+        pass
 
     def ingresar_entero(self,min,max,mensaje,error):            
             while True:
@@ -284,6 +294,26 @@ class Sistema:
                     return numero
                 except ValueError:
                     print(error)
+    
+    def crearArticulo(self):
+        #Crear metodo crear articulo que obtiene un id usuario y devuelve un articulo.
+        pass
+    
+    def leerComentarios(self,id_articulo):
+        comentarios_del_articulo=[]
+        for comentario in self.get_comentarios():
+            if comentario.get_id_articulo() == id_articulo:
+                comentarios_del_articulo.append(comentario)
+        
+        if len(comentarios_del_articulo)==0:
+            print("No hay ningun comentario para el articulo que consulta")
+        else:
+            for comentario in comentarios_del_articulo:
+                print(f"'{self.get_username_by_id(comentario.get_id_usuario())}' comentó: {comentario.get_contenido()}")
+                print(f"fecha: {comentario.get_fecha_hora()}")
+                print("----------------------------------------")
+            
+            
                     
 
         
@@ -322,10 +352,38 @@ class Sistema:
         print('finaliza metodo registar')
         
     def menu_opciones(self,username):
-        for user in self.get_usuarios():
-            if user.get_username()==username:
-                usuario=user
-        print(f"Bienvenido {usuario.get_nombre()}! que desea hacer?")
+        while True:
+            for user in self.get_usuarios():
+                if user.get_username()==username:
+                    usuario=user
+            usuario.login()
+            min=0
+            max=1
+            print(f"Bienvenido {usuario.get_nombre()}! que desea hacer? Usted es un usuario tipo: {type(usuario).__name__}")
+            print("0_ Salir al Menu principal")
+            print("1_ Leer Articulos")
+            if 	type(usuario).__name__ == "Colaborador":
+                max=2
+                print("2_ Crear Articulo")
+                
+            opcion=self.ingresar_entero(min,max,"Por favor ingrese su respuesta: ",f"solamente ingrese desde {min} hasta {max}")
+            if opcion==0:
+                usuario.logout()
+                break
+            elif opcion==1:
+                nro_articulos=self.listar_articulos()
+                print(f"Desea leer los comentarios de alguno de los {nro_articulos} Articulos?")
+                opcion=self.ingresar_entero(0,nro_articulos,"Por favor ingresa el id del articulo o 0 si desea salir: ",f"solamente ingrese desde 0 hasta {nro_articulos}")
+                if opcion != 0:
+                    self.leerComentarios(opcion,)
+                    opcion=self.ingresar_entero(0,nro_articulos,"Por favor ingresa 0 si desea salir o 1 si desea agregar un comentario: ","solamente ingrese 0 o 1")
+                    if opcion == 1:
+                        comentario=self.crearComentario()
+                        self.agregar_comentario(comentario)
+            else:
+                self.crearArticulo(usuario)
+                
+        
         
     
     def validacion_username(self,username_valido):
