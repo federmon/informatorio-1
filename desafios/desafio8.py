@@ -300,9 +300,14 @@ class Sistema:
     def crearArticulo(self,id_usuario):
         id_articulo=len(self.get_articulos())+1
         titulo=input("Por favor ingrese el titulo de su nevo Articulo: ")
-        resumen=input("Por favor ingrese el resumen de su nuevo Articulo: ")        
-        nuevo_articulo=Articulo()
-        pass
+        resumen=input("Por favor ingrese el resumen de su nuevo Articulo: ")    
+        contenido=input("Ingrese el contenido de su Articulo")
+        fecha_publicacion=datetime.today()
+        imagen=input("ingrese el link de la imagen de su Articulo")
+        estado=True
+        nuevo_articulo=Articulo(id_articulo,id_usuario,titulo,resumen,contenido,fecha_publicacion,imagen,estado)
+        print("nuevo articulo creado con éxito")
+        return nuevo_articulo
     
     def crearComentario(self,id_articulo,id_usuario):
         contenido=input("Ingrese lo que opina respecto al articulo por favor: ")
