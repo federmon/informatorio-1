@@ -372,7 +372,8 @@ class Sistema:
         print(f'el usuario {username} ah sido registrado correctamente')
         
     def menu_opciones(self,username):
-        while True:
+        bandera=True
+        while bandera:
             for user in self.get_usuarios():
                 if user.get_username()==username:
                     usuario=user
@@ -389,7 +390,8 @@ class Sistema:
             opcion=self.ingresar_entero(min,max,"Por favor ingrese su respuesta: ",f"solamente ingrese desde {min} hasta {max}")
             if opcion==0:
                 usuario.logout()
-                self.comenzar()
+                bandera=False
+                break
                 
             elif opcion==1:
                 nro_articulos=self.listar_articulos()
@@ -426,7 +428,8 @@ class Sistema:
             
     
     def loguearse(self):
-        while True:
+        bandera=True
+        while bandera:
             username=input('Ingrese su username por favor: ')
             if not self.validacion_username(username):
                 print("El username ingresado es incorrecto por favor")
@@ -439,8 +442,9 @@ class Sistema:
                     input("Contraseña incorrecta! Presiona ENTER para continuar")
                 else:
                     input("contraseña correcta! Presiona ENTER para continuar")
+                    bandera=False
                     self.menu_opciones(username) #acá ya esta logeado y entra en el menu
-					
+                    
     
     def comenzar(self):
        
@@ -478,31 +482,6 @@ desafio8.comenzar()
 
 
 
-'''
-
-class Publico(Usuario):
-  def __init__(self, id, nombre, apellido, telefono, username, email, contrasena, fecha, avatar, estado, online):
-    super().__init__( id, nombre, apellido, telefono, username, email, contrasena, fecha, avatar, estado, online)
-def registro( registrar(), comentar())
-
-class Colaborador(Usuario)
-      def_init_(self, "es_colaborador")
-        super()_init_(id, nombre, apellido, telefono, username, email, contrasena, fecha, avatar, estado, online)
-
-def registro(registrar(), comentar(), publicar())
-bandera = True
-usuarios = []
-print('asdasd')
-while bandera:
-    print("Que desea realizar? 1_ Registrar 2_Logearse 3_Salir")
-    opcion=ingresar_entero('Ingresar la opcion: ','Por favor ingresa un numero nada mas')
-    if opcion == 1:
-                registrar
-            elif opcion == 2:
-                loggearse:
-            else:
-                bandera=False
-'''
 
 
         
