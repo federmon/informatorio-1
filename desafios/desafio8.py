@@ -369,7 +369,7 @@ class Sistema:
                     break
                 else:
                     break
-        print('finaliza metodo registar')
+        print(f'el usuario {username} ah sido registrado correctamente')
         
     def menu_opciones(self,username):
         while True:
@@ -389,7 +389,8 @@ class Sistema:
             opcion=self.ingresar_entero(min,max,"Por favor ingrese su respuesta: ",f"solamente ingrese desde {min} hasta {max}")
             if opcion==0:
                 usuario.logout()
-                break
+                self.comenzar()
+                
             elif opcion==1:
                 nro_articulos=self.listar_articulos()
                 print(f"Desea leer los comentarios de alguno de los {nro_articulos} Articulos?")
@@ -461,6 +462,7 @@ class Sistema:
             else:
                 bandera=False
                 print('Esto fue el desafio_8 del grupo 3')
+                quit
         
 
 
